@@ -1,0 +1,34 @@
+{
+  "name": "x3dom-livereload",
+  "version": "0.3.0",
+  "description": "is an x3dom tiny boilerplate with a livereload server",
+  "main": "index.html",
+  "scripts": {
+    "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fibo/x3dom-livereload.git"
+  },
+  "keywords": [
+    "x3dom",
+    "livereload",
+    "3d"
+  ],
+  "author": {
+    "name": "Gianluca Casati",
+    "url": "http://g14n.info"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fibo/x3dom-livereload/issues"
+  },
+  "homepage": "https://github.com/fibo/x3dom-livereload#readme",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-connect": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "x3dom": "^1.7.1"
+  }
+}
