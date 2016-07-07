@@ -1,23 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My first X3DOM page</title>
+  <title>X3DOM VR Webb Cluster</title>
   <script type='text/javascript' src='/node_modules/x3dom/x3dom.js'> </script>
   <link rel='stylesheet' type='text/css' href='/node_modules/x3dom/x3dom.css'></link>
 </head>
 <body>
-  <h1>Hello, X3DOM!</h1>
-  <p>
-    This is my first html page with some 3d objects.
-  </p>
-  <x3d width='500px' height='400px'>
+<p>Result: <output id="result"></output></p>
+<button onclick="startWorker()">Start Worker</button>
+<button onclick="stopWorker()">Stop Worker</button>
+<script>
+var w;
+
+function startWorker() {
+alert("hua");
+    if(typeof(Worker) !== "undefined") {
+        if(typeof(w) == "undefined") {
+            w = new Worker("src/readCSV.js");
+			alert(w);
+        }
+        w.onmessage = function(event) {
+            document.getElementById("result").innerHTML = event.data;
+        };
+    } else {
+        document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+    }
+}
+
+function stopWorker() {
+    w.terminate();
+    w = undefined;
+}
+</script>
+
+<br><br>
+  <x3d showStat="true" >
     <scene>
-      <shape>
-        <appearance>
-          <material diffuseColor='1 0 0'></material>
-        </appearance>
-        <box></box>
-      </shape>
+  
+            <Inline url="visible1.x3d" />
+
     </scene>
   </x3d>
 </body>
