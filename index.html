@@ -6,7 +6,7 @@
   <link rel='stylesheet' type='text/css' href='/node_modules/x3dom/x3dom.css'></link>
 </head>
 <body>
-
+<div onclick="fullscreen();" id="fsbutton"><h1>Fullscreen<br/>Mode</h1></div>
 <ul id ="nav">
 <li>
 <img src="./src/images/menu_icon.png" height="25" width="25"/>
@@ -16,12 +16,13 @@
 <div id="x3d">
   <x3d showStat="true" >
     <scene>
-	
+		<Group DEF='theScene'>
 	<Transform translation='0 0 -10'>	
-	<Group>
+	
+
 		<Inline url="cluster.x3d" />
 		<Inline url="visible1.x3d" />
-	</Group>
+
 	</Transform>
 
 	<Transform scale='0.5 0.5 0.5' translation='-3.3 1.8 5'>
@@ -32,9 +33,117 @@
       <box size='0.5 0.5 0'/>
     </Shape>
 	</Transform>
+		</Group>
+  <group DEF='left'>
+            <shape>
+                <appearance>
+                    <renderedTexture interpupillaryDistance="0.03" id="rtLeft" stereoMode="LEFT_EYE" update='ALWAYS'
+                                     dimensions='960 1080 4' repeatS='false' repeatT='false'>
+                        <viewpoint USE='vp' containerField='viewpoint'></viewpoint>
+                        <background USE='bgnd' containerField='background'></background>
+                        <!--group USE='left' containerField="excludeNodes"></group-->
+                        <group USE='theScene' containerField="scene"></group>
+                    </renderedTexture>
+                    <composedShader>
+                        <field name='tex' type='SFInt32' value='0'></field>
+                        <field name='leftEye' type='SFFloat' value='1'></field>
+                        <shaderPart type='VERTEX'>
+                            attribute vec3 position;
+                            attribute vec2 texcoord;
 
+                            uniform mat4 modelViewProjectionMatrix;
+                            varying vec2 fragTexCoord;
+
+                            void main()
+                            {
+                                vec2 pos = sign(position.xy);
+                                fragTexCoord = texcoord;
+
+                                gl_Position = vec4((pos.x/2.0)-0.5, pos.y, 0.0, 1.0);
+                            //    gl_Position = vec4((pos.x - 1.0) / 2.0, pos.y, 0.0, 1.0);
+
+                            //gl_Position = vec4(pos.xy / 4.0 + vec2(-0.75,0.75), 0.0, 1.0);
+                            }
+                        </shaderPart>
+                        <shaderPart DEF="frag" type='FRAGMENT'>
+                            #ifdef GL_ES
+                            precision highp float;
+                            #endif
+
+                            uniform sampler2D tex;
+                            uniform float leftEye;
+                            varying vec2 fragTexCoord;
+
+                            void main()
+                            {
+
+                                gl_FragColor = texture2D(tex, fragTexCoord);
+                            }
+                        </shaderPart>
+                    </composedShader>
+                </appearance>
+                <plane solid="false"></plane>
+            </shape>
+        </group>
+        <group DEF='right'>
+            <shape>
+                <appearance>
+                    <renderedTexture interpupillaryDistance="0.03" id="rtRight" stereoMode="RIGHT_EYE" update='ALWAYS'
+                                     dimensions='960 1080 4' repeatS='false' repeatT='false'>
+                        <viewpoint USE='vp' containerField='viewpoint'></viewpoint>
+                        <background USE='bgnd' containerField='background'></background>
+                        <group USE='theScene' containerField="scene"></group>
+                    </renderedTexture>
+                    <composedShader>
+                        <field name='tex' type='SFInt32' value='0'></field>
+                        <field name='leftEye' type='SFFloat' value='0'></field>
+                        <shaderPart type='VERTEX'>
+                            attribute vec3 position;
+                            attribute vec2 texcoord;
+
+                            uniform mat4 modelViewProjectionMatrix;
+                            varying vec2 fragTexCoord;
+
+                            void main()
+                            {
+                                vec2 pos = sign(position.xy);
+                                fragTexCoord = texcoord;
+
+                                gl_Position = vec4((pos.x + 1.0) / 2.0, pos.y, 0.0, 1.0);
+                            }
+                        </shaderPart>
+                        <shaderPart USE="frag" type='FRAGMENT'>
+                        </shaderPart>
+                    </composedShader>
+                </appearance>
+                <plane solid="false"></plane>
+            </shape>
+        </group>
     </scene>
   </x3d>
   </div>
-</body>
+<script>
+ function fullscreen() {
+alert("haa");
+        rtLeft = document.getElementById('rtLeft');
+		alert(rtLeft);
+        rtRight = document.getElementById('rtRight');
+        rtLeft._x3domNode.lensCenter = 0;
+        rtRight._x3domNode.lensCenter = 0;
+
+   
+        container = document.getElementById('x3dElement');
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.msRequestFullscreen) {
+            container.msRequestFullscreen();
+        } else if (container.mozRequestFullScreen) {
+            container.mozRequestFullScreen();
+        } else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
+        }
+    }
+</script>
+  </body>
+
 </html>

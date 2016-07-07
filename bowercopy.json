@@ -1,0 +1,9 @@
+{
+    "libs": {
+        "options": {
+            "destPrefix": "app/js/vendor",
+            "clean": true
+        }
+     
+    }
+}

@@ -16,7 +16,7 @@ module.exports = (grunt) ->
       server:
         options:
           hostname: '*'
-          port: 5000
+          port: 9000
           livereload: livereloadPort
 
   grunt.loadNpmTasks 'grunt-contrib-connect'

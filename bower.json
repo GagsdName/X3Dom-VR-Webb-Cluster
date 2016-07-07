@@ -1,0 +1,9 @@
+{
+  "name": "temp",
+  "version": "0.0.0",
+  "dependencies": {
+    "threejs": "",
+    "papaparse": "^4.1.2",
+    "gsap": "GreenSock-JS#^1.18.2"
+  }
+}
