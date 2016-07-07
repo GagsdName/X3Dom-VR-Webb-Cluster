@@ -6,40 +6,35 @@
   <link rel='stylesheet' type='text/css' href='/node_modules/x3dom/x3dom.css'></link>
 </head>
 <body>
-<p>Result: <output id="result"></output></p>
-<button onclick="startWorker()">Start Worker</button>
-<button onclick="stopWorker()">Stop Worker</button>
-<script>
-var w;
 
-function startWorker() {
-alert("hua");
-    if(typeof(Worker) !== "undefined") {
-        if(typeof(w) == "undefined") {
-            w = new Worker("src/readCSV.js");
-			alert(w);
-        }
-        w.onmessage = function(event) {
-            document.getElementById("result").innerHTML = event.data;
-        };
-    } else {
-        document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
-    }
-}
-
-function stopWorker() {
-    w.terminate();
-    w = undefined;
-}
-</script>
-
+<ul id ="nav">
+<li>
+<img src="./src/images/menu_icon.png" height="25" width="25"/>
+</li>
+</ul>
 <br><br>
+<div id="x3d">
   <x3d showStat="true" >
     <scene>
-  
-            <Inline url="visible1.x3d" />
+	
+	<Transform translation='0 0 -10'>	
+	<Group>
+		<Inline url="cluster.x3d" />
+		<Inline url="visible1.x3d" />
+	</Group>
+	</Transform>
+
+	<Transform scale='0.5 0.5 0.5' translation='-3.3 1.8 5'>
+	<Shape>
+		<Appearance>
+			 <ImageTexture url="./src/images/menu_icon.png"/>
+		</Appearance>
+      <box size='0.5 0.5 0'/>
+    </Shape>
+	</Transform>
 
     </scene>
   </x3d>
+  </div>
 </body>
 </html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D profile='Immersive' version='3.0' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+  <head>
+    <component level='1' name='Geospatial'/>
+    <meta content='WorldHigh.x3d' name='title'/>
+    <meta content='World selector with high vertical exaggeration.' name='description'/>
+    <meta content='Martin Reddy SRI authored the original scene.' name='creator'/>
+    <meta content='Don Brutzman' name='translator'/>
+    <meta content='22 April 2003' name='translated'/>
+    <meta content='19 January 2014' name='modified'/>
+    <meta content='http://www.geovrml.org/examples' name='reference'/>
+    <meta content='X3D geospatial example' name='subject'/>
+    <meta content='http://www.web3d.org/x3d/content/examples/Basic/Geospatial/WorldHigh.x3d' name='identifier'/>
+    <meta content='Vrml97ToX3dNist, http://ovrt.nist.gov/v2_x3d.html' name='generator'/>
+    <meta content='X3D-Edit 3.3, https://savage.nps.edu/X3D-Edit' name='generator'/>
+    <meta content='../license.html' name='license'/>
+  </head>
+  <Scene>
+
+
+<GeoLocation geoCoords='35.0 -70.0 10000000'>
+        <Transform translation='-1000000.0 0.0 -600000.0'>
+          <TouchSensor DEF='Touch1' description='vertical scale times 1'/>
+          <Shape>
+            <Appearance>
+              <ImageTexture url='"images/x1.gif" "http://www.web3d.org/x3d/content/examples/Basic/Geospatial/images/xl.jpg"'/>
+            </Appearance>
+            <Box DEF='BOX' size='200000.0 200000.0 200000.0'/>
+          </Shape>
+        </Transform>
+        <Transform translation='-1000000.0 0.0 -300000.0'>
+          <TouchSensor DEF='Touch50' description='vertical scale times 50'/>
+          <Shape>
+            <Appearance>
+              <ImageTexture url='"images/x50.gif" "http://www.web3d.org/x3d/content/examples/Basic/Geospatial/images/x50.gif"'/>
+            </Appearance>
+            <Box USE='BOX'/>
+          </Shape>
+        </Transform>
+        <Transform translation='-1000000.0 0.0 -0.0'>
+          <TouchSensor DEF='Touch200' description='vertical scale times 200'/>
+          <Shape>
+            <Appearance>
+              <ImageTexture url='"images/x200.gif" "http://www.web3d.org/x3d/content/examples/Basic/Geospatial/images/x200.gif"'/>
+            </Appearance>
+            <Box USE='BOX'/>
+          </Shape>
+        </Transform>
+        <Transform translation='-1000000.0 0.0 300000.0'>
+          <TouchSensor DEF='TouchShaded' description='simple shading no texture image'/>
+          <Shape>
+            <Appearance>
+              <ImageTexture url='"images/shaded.gif" "http://www.web3d.org/x3d/content/examples/Basic/Geospatial/images/shaded.gif"'/>
+            </Appearance>
+            <Box USE='BOX'/>
+          </Shape>
+        </Transform>
+        <Transform translation='-1000000.0 0.0 600000.0'>
+          <TouchSensor DEF='TouchTextured' description='apply texture image'/>
+          <Shape>
+            <Appearance>
+              <ImageTexture url='"images/textured.gif" "http://www.web3d.org/x3d/content/examples/Basic/Geospatial/images/textured.gif"'/>
+            </Appearance>
+            <Box USE='BOX'/>
+          </Shape>
+        </Transform>
+      </GeoLocation>
+	  
+	    </Scene>
+</X3D>
