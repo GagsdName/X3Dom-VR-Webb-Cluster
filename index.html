@@ -3,62 +3,135 @@
 <head>
   <title>X3DOM VR Webb Cluster</title>
   <script type='text/javascript' src='/node_modules/x3dom/x3dom.js'> </script>
+  <script type='text/javascript' src='/node_modules/webvr/build/webvr.js'></script>
   <link rel='stylesheet' type='text/css' href='/node_modules/x3dom/x3dom.css'></link>
+	
+      <!--  #x3dElement{position:relative;display:block;display:block;background:#000 url(./src/images/skybox.jpg);width:100%;height:100%;}
+			-->	
+	<style>
+   
+			#x3dElement{background-color:black;}
+	</style>
+	
 </head>
 <body>
-<div onclick="fullscreen();" id="fsbutton"><h1>Fullscreen<br/>Mode</h1></div>
-<br><br>
-<div id="x3d">
-  <x3d showStat="true" showLog="true" >
-    <scene>
-	 
-   <navigationInfo type='"none" "any"' id="navType"></navigationInfo>
 
-	 <Billboard axisOfRotation="0 0 0"> 
-	<Group DEF='theScene'>
+<!-- Button to go fullscreen -->
 
-	<Transform translation='0 0 -10'>	
-	
+<a href="#" onclick="fullscreen();" style="position: absolute; right:2%;bottom:2%;"><img src="./src/images/full_screen.png" alt="fullscreen View" style="position: absolute; right:0%;bottom:0%;" onclick="fullscreen();" id="fsbutton"></a>
 
-		<Inline url="cluster.x3d" />
-		<Inline url="visible1.x3d" />
+<!-- div element contains the x3d scene-->
 
-	</Transform>
-
-	
-
-
-	<Transform scale='0.5 0.5 0.5' translation='-3.3 1.8 5' DEF='Panel'>
-	
-		<Shape>
-			<Appearance>
-			 <ImageTexture url="./src/images/menu_icon.png"/>
-			</Appearance>
-		<box size='0.5 0.5 0'/>
-		</Shape>
-    </Transform> 
-
+	<x3d id='x3dElement'>
+		<scene>
 		
 		
-    
-		</Group>
-			 </Billboard>
-		         
-  <!--
-  <group DEF='left'>
-            <shape>
-                <appearance>
-                    <renderedTexture interpupillaryDistance="0.03" id="rtLeft" stereoMode="LEFT_EYE" update='ALWAYS'
+		
+		
+		<!-- Navigation mode set to 'none' to disable auto rotation and scaling -->
+
+		
+			<viewpoint id='vpp' DEF='vp' description='ViewPoint 1' 
+                   zNear="2" zFar="300"></viewpoint>
+		
+		
+			<!-- The earth-visible and cluster stars as well as the menu icons put in a group-->
+			<Group DEF='theScene'>
+				<Transform translation='0 0 -5'>	
+				<!--Inlininig pre-processed  x3d files -->
+					<Inline url="cluster.x3d" />
+					<Inline url="visible1.x3d" />
+				</Transform>
+			
+			
+			<Group onclick="document.getElementById('bar').setAttribute('translation', event.hitPnt);">
+				<!-- Menu Toggle Icon -->
+				<Transform scale='0.5 0.5 0.5' translation='-3.619 1.8 5' DEF='visible_toggle'>
+				<X3DTouchSensorNode enabled='true' metadata='X3DMetadataObject' DEF='LoadTrigger' description='click to load inlined Box'></X3DTouchSensorNode>
+					<Shape>
+						<Appearance>
+							<ImageTexture url="./src/images/visible_toggle.png" />
+						</Appearance>
+					
+						<box size='0.5 0.5 0'/>
+					</Shape>
+				</Transform> 
+				  
+				<Transform scale='0.5 0.5 0.5' translation='0 0 0' render='false'>
+					<Shape>
+						<Text length='0' string='"Visible Stars Toggled"'>
+							<FontStyle/>
+						</Text>
+						<Appearance>
+							<Material diffuseColor='0.6 0.3 0'/>
+						</Appearance>
+					</Shape>
+				</Transform>
+				
+				<Transform scale='0.5 0.5 0.5' translation='-3.319 1.8 5' DEF='cluster_toggle'>
+					<Shape>
+						<Appearance>
+							<ImageTexture url="./src/images/cluster_toggle.png" />
+						</Appearance>
+					
+						<box size='0.5 0.5 0'/>
+					</Shape>
+				</Transform> 
+				
+				<Transform scale='0.5 0.5 0.5' translation='-3.019 1.8 5' DEF='rotation_toggle'>
+					<Shape>
+						<Appearance>
+							<ImageTexture url="./src/images/rotate_icon.jpg" />
+						</Appearance>
+					
+						<box size='0.5 0.5 0'/>
+					</Shape>
+				</Transform> 
+				
+				<Transform scale='0.5 0.5 0.5' translation='-2.719 1.8 5' DEF='fov_toggle'>
+					<Shape>
+						<Appearance>
+							<ImageTexture url="./src/images/fov_toggle.png" />
+						</Appearance>
+					
+						<box size='0.5 0.5 0'/>
+					</Shape>
+				</Transform> 
+				
+				<Transform scale='0.5 0.5 0.5' translation='-2.419 1.8 5' DEF='position_toggle'>
+					<Shape>
+						<Appearance>
+							<ImageTexture url="./src/images/position_toggle.jpg" />
+						</Appearance>
+					
+						<box size='0.5 0.5 0'/>
+					</Shape>
+				</Transform> 
+				
+				</Group>
+			
+			
+			</Group>
+		
+<!-- Adding stereoscopic components -->		
+
+			<group DEF='left'>
+				<shape>
+					<appearance>
+						<renderedTexture interpupillaryDistance="0.03" id="rtLeft" stereoMode="LEFT_EYE" update='ALWAYS'
                                      dimensions='960 1080 4' repeatS='false' repeatT='false'>
-                        <viewpoint USE='vp' containerField='viewpoint'></viewpoint>
-                        <background USE='bgnd' containerField='background'></background>
+						
+							<viewpoint USE='vp' containerField='viewpoint'></viewpoint>
+                        
+							<background USE='bgnd' containerField='background'></background>
      
-                        <group USE='theScene' containerField="scene"></group>
-                    </renderedTexture>
-                    <composedShader>
-                        <field name='tex' type='SFInt32' value='0'></field>
-                        <field name='leftEye' type='SFFloat' value='1'></field>
-                        <shaderPart type='VERTEX'>
+							<group USE='theScene' containerField="scene"></group>
+						</renderedTexture>
+                    
+						<composedShader>
+							<field name='tex' type='SFInt32' value='0'></field>
+							<field name='leftEye' type='SFFloat' value='1'></field>
+						<shaderPart type='VERTEX'>
                             attribute vec3 position;
                             attribute vec2 texcoord;
 
@@ -130,18 +203,32 @@
                 <plane solid="false"></plane>
             </shape>
         </group> 
-		-->
+		
+
+		
+		   <Transform id="bar" DEF="foo" scale=".03 .03 .03">
+					<Shape>
+						<Appearance>
+							<Material diffuseColor="olivedrab" specularColor="peachpuff" />
+						</Appearance>
+						<Sphere />
+					</Shape>
+                </Transform>
+				
+
 	
     </scene>
   </x3d>
-  </div>
-<script>
- var runtime = null;
-    var rtLeft, rtRight;
-    var lastW, lastH;
-    var degreeToRadiansFactor = Math.PI / 180;
 
-    x3dom.fields.Quaternion.prototype.setFromEulerYXZ = function (alpha, beta, gamma) {
+<script>
+
+
+var runtime = null;
+var rtLeft, rtRight;
+var lastW, lastH;
+var degreeToRadiansFactor = Math.PI / 180;
+
+x3dom.fields.Quaternion.prototype.setFromEulerYXZ = function (alpha, beta, gamma) {
 
         var c1 = Math.cos( alpha / 2 );
         var c2 = Math.cos( beta / 2 );
@@ -168,6 +255,7 @@
     document.onload = function ()
     {
         runtime = document.getElementById('x3dElement').runtime;
+
         rtLeft = document.getElementById('rtLeft');
         rtRight = document.getElementById('rtRight');
         //rtLeft._x3domNode.lensCenter = 0;
@@ -215,26 +303,45 @@
 
 
 
- function fullscreen() {
-alert("haa");
-        rtLeft = document.getElementById('rtLeft');
-		alert(rtLeft);
-        rtRight = document.getElementById('rtRight');
-        rtLeft._x3domNode.lensCenter = 0;
-        rtRight._x3domNode.lensCenter = 0;
+ function fullscreen() 
+ {
+	
+    
+    rtLeft = document.getElementById('rtLeft');
 
-   
-        container = document.getElementById('x3dElement');
-        if (container.requestFullscreen) {
-            container.requestFullscreen();
-        } else if (container.msRequestFullscreen) {
-            container.msRequestFullscreen();
-        } else if (container.mozRequestFullScreen) {
-            container.mozRequestFullScreen();
-        } else if (container.webkitRequestFullscreen) {
-            container.webkitRequestFullscreen();
-        }
+    rtRight = document.getElementById('rtRight');
+    rtLeft._x3domNode.lensCenter = 0;
+    rtRight._x3domNode.lensCenter = 0;
+
+    container = document.getElementById('x3dElement');
+    if (container.requestFullscreen)
+	{
+        container.requestFullscreen();
+    } 
+	else if (container.msRequestFullscreen) 
+	{
+        container.msRequestFullscreen();
+    } 
+	else if (container.mozRequestFullScreen) 
+	{
+        container.mozRequestFullScreen();
+    } 
+	else if (container.webkitRequestFullscreen) 
+	{
+        container.webkitRequestFullscreen();
     }
+ }
+ 
+ 
+function detectmob() { 
+
+   if(window.innerWidth <= 800 && window.innerHeight <= 600) {
+     return true;
+   } else {
+     return false;
+   }
+
+}
 </script>
 
 

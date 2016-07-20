@@ -1,27 +1,20 @@
-# x3dom-livereload
+# VR-Webb-Cluster
 
-> is an [x3dom][1] tiny boilerplate with a [livereload][2] server
+A Three.js and WebVR based application to provide an immersive yet lightweight native browser experience of viewing a star cluster from a different galaxy as a part of our own solar system. The application provides for associated functionality to help visualize the cluster along with the earth visible stars and includes toggle features to generate a better understanding of the scenario. The star positions as provided by Enrico Vesperini & Jeremy Webb from the Astronomy school at IU are in the unit of parsecs and have been accurately mapped onto the coordinate system. 
+WebVR provides for a native browser immersion and lightweight javascript code which can be used to view the application in a chrome browser on any device platform. 
 
-## How to
+Tech Used – 
 
-First install [Node.js][3]. Then copy and paste the following code into a terminal
+1) Three.js
+2) WebVR
+3) Reticulum.js
+4) Dat.gui
 
-```
-npm install -g grunt-cli
-git clone https://github.com/fibo/x3dom-livereload
-cd x3dom-livereolad
-npm install
-grunt
-```
 
-Then point your browser to *http://localhost:3000* and start editing *index.html*.
-Play with [x3dom][1] and every time you save the *index.html* your 3d scene will be updated
-magically without reloading your browser, thanks to [livereload][2].
+Steps to run -
 
-## License
+1) git clone https://github.iu.edu/singhgag/VR-Webb-Cluster . (which will clone the repository to the local file system)
+2) npm install (which will install any missing or all dependencies need for the application as specified in the node configuration, including grunt)
+3) grunt serve (which will launch an instance of the grunt dev server on port 7000 and open the same for viewing in a new browser window - use Google Chrome preferably for a better experience )
+4)(optional - if the command specified in step 3 doesn't work) npm install grunt --save-dev(which will install the grunt cli for the application and save it in the application folder heirarchy)
 
-[MIT](http://g14n.info/mit-license)
-
-  [1]: http://www.x3dom.org/ "x3dom"
-  [2]: http://livereload.com/ "livereload"
-  [3]: https://nodejs.org/ "Node.js"
