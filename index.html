@@ -4,6 +4,8 @@
   <title>X3DOM VR Webb Cluster</title>
   <script type='text/javascript' src='/node_modules/x3dom/x3dom.js'> </script>
   <script type='text/javascript' src='/node_modules/webvr/build/webvr.js'></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js" ></script>
+  
   <link rel='stylesheet' type='text/css' href='/node_modules/x3dom/x3dom.css'></link>
 	
       <!--  #x3dElement{position:relative;display:block;display:block;background:#000 url(./src/images/skybox.jpg);width:100%;height:100%;}
@@ -12,7 +14,73 @@
    
 			#x3dElement{background-color:black;}
 	</style>
+	<script>
+// Get display size
+var deviceOrientation = 'portrait';
+notFirstTime = false;
+//alert ('Checking device orientation and display size');
+while (deviceOrientation == 'portrait') {
+	insideWidth = window.innerWidth;
+	insideHeight = window.innerHeight;
+	if (insideWidth > insideHeight) {deviceOrientation = 'landscape';}
+	if (notFirstTime) {alert ("Please oriention device to landscape and press 'OK'");}
+	notFirstTime = true;
+}
+x3dWidth = Math.floor((insideWidth-12)/2);
+x3dHeight = insideHeight;
+//x3dHeight = x3dHeight/2;
+x3dHeight = x3dHeight - 2;
+</script>
+<script>
+    	//Round a float value to x.xx format
+    	function roundWithTwoDecimals(value)
+    	{
+    		return (Math.round(value * 100)) / 100;
+    	}
+    
+    	//Handle click on any group member
+    	function handleGroupClick(event)
+    	{
+		
+
+    		//Mark hitting point
+    		$('#marker').attr('translation', event.hitPnt);
+    		console.log(event);
+    		
+    		//Display coordinates of hitting point (rounded)
+    		var coordinates = event.hitPnt;
+    		$('#coordX').html(roundWithTwoDecimals(coordinates[0]));
+    		$('#coordY').html(roundWithTwoDecimals(coordinates[1]));
+    		$('#coordZ').html(roundWithTwoDecimals(coordinates[2]));
+			
 	
+			
+    	}
+    	
+		function handleVisibleToggle(event)
+		{
+			setTimeout(explode, 800);
+			document.getElementById("visible").setAttribute('render',"false");
+            document.getElementById("text").setAttribute('render',"true");
+			function explode(){
+					document.getElementById("text").setAttribute('render',"false");
+			}
+		
+		}
+		
+		function handleClusterToggle(event)
+		{
+			setTimeout(explode, 800);
+			document.getElementById("cluster").setAttribute('render',"false");
+            document.getElementById("clusterText").setAttribute('render',"true");
+			function explode(){
+					document.getElementById("clusterText").setAttribute('render',"false");
+			}
+		
+		}
+        </script>
+
+
 </head>
 <body>
 
@@ -26,29 +94,50 @@
 		<scene>
 		
 		
-		
+			<environment frustumCulling='true' > </environment>
 		
 		<!-- Navigation mode set to 'none' to disable auto rotation and scaling -->
-
 		
 			<viewpoint id='vpp' DEF='vp' description='ViewPoint 1' 
-                   zNear="2" zFar="300"></viewpoint>
+                   zNear="0.01" zFar="300" ></viewpoint>
 		
 		
 			<!-- The earth-visible and cluster stars as well as the menu icons put in a group-->
-			<Group DEF='theScene'>
+			<Group DEF='theScene' ">
+					 
 				<Transform translation='0 0 -5'>	
 				<!--Inlininig pre-processed  x3d files -->
-					<Inline url="cluster.x3d" />
-					<Inline url="visible1.x3d" />
+					<Inline url="cluster.x3d" id ="cluster" render="true"/>
+					<Inline url="visible1.x3d" id ="visible" render="true"/>
 				</Transform>
 			
+			<Transform translation='0 0 5'>	
+				<shape id="text" render="false" >
+					<appearance>
+						<material ambientIntensity='0.0933' diffuseColor='0.32 0.54 0.26' shininess='1' specularColor='0.46 0.46 0.46'></material>
+					</appearance>
+					<text string='Visible Stars Toggled' solid='false'>
+						<fontstyle family="'Times' 'Orbitron'" size="0.5"></fontstyle>
+					</text>
+				</shape>
+			</Transform>
 			
-			<Group onclick="document.getElementById('bar').setAttribute('translation', event.hitPnt);">
+			<Transform translation='0 0 5'>	
+				<shape id="clusterText" render="false" >
+					<appearance>
+						<material ambientIntensity='0.0933' diffuseColor='0.32 0.54 0.26' shininess='1' specularColor='0.46 0.46 0.46'></material>
+					</appearance>
+					<text string='Cluster Stars Toggled' solid='false'>
+						<fontstyle family="'Times' 'Orbitron'" size="0.5"></fontstyle>
+					</text>
+				</shape>
+			</Transform>
+		
+			<Group onclick="handleGroupClick(event)">
 				<!-- Menu Toggle Icon -->
-				<Transform scale='0.5 0.5 0.5' translation='-3.619 1.8 5' DEF='visible_toggle'>
-				<X3DTouchSensorNode enabled='true' metadata='X3DMetadataObject' DEF='LoadTrigger' description='click to load inlined Box'></X3DTouchSensorNode>
-					<Shape>
+				<Transform scale='0.5 0.5 0.5' translation='-3.619 1.8 5' DEF='visible_toggle' onclick="alert("hurrr");">
+			
+					<Shape id="visibleToggle" onclick="handleVisibleToggle(event);">
 						<Appearance>
 							<ImageTexture url="./src/images/visible_toggle.png" />
 						</Appearance>
@@ -57,19 +146,10 @@
 					</Shape>
 				</Transform> 
 				  
-				<Transform scale='0.5 0.5 0.5' translation='0 0 0' render='false'>
-					<Shape>
-						<Text length='0' string='"Visible Stars Toggled"'>
-							<FontStyle/>
-						</Text>
-						<Appearance>
-							<Material diffuseColor='0.6 0.3 0'/>
-						</Appearance>
-					</Shape>
-				</Transform>
+			
 				
 				<Transform scale='0.5 0.5 0.5' translation='-3.319 1.8 5' DEF='cluster_toggle'>
-					<Shape>
+					<Shape onclick="handleClusterToggle(event);">
 						<Appearance>
 							<ImageTexture url="./src/images/cluster_toggle.png" />
 						</Appearance>
@@ -110,11 +190,25 @@
 				
 				</Group>
 			
-			
+	
+				
+				
+        <Transform id="marker" scale=".05 .05 .05" translation="0 0 0">
+            <Shape>
+                <Appearance>
+                    <Material diffuseColor="#FFD966"></Material>
+                </Appearance>
+                <Sphere></Sphere>
+        
+		</Shape>
+        </Transform>
+		
+				
+	
 			</Group>
 		
 <!-- Adding stereoscopic components -->		
-
+<!--
 			<group DEF='left'>
 				<shape>
 					<appearance>
@@ -202,20 +296,13 @@
                 </appearance>
                 <plane solid="false"></plane>
             </shape>
+			
         </group> 
 		
-
+-->
 		
-		   <Transform id="bar" DEF="foo" scale=".03 .03 .03">
-					<Shape>
-						<Appearance>
-							<Material diffuseColor="olivedrab" specularColor="peachpuff" />
-						</Appearance>
-						<Sphere />
-					</Shape>
-                </Transform>
-				
 
+				
 	
     </scene>
   </x3d>
